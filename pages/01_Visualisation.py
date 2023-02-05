@@ -9,9 +9,31 @@ from generate_python_code import python_code
 # Page setup 
 page_icon = Image.open("Images/page_icon.png")
 st.set_page_config(page_title="Data Explorer", page_icon=page_icon, layout="wide")
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden; }
+        footer {visibility: hidden;}
+        </style>
+        """
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 # User input file
 
-st.title(":bar_chart: :blue[Visualization]")
+import streamlit.components.v1 as components  # Import Streamlit
+
+# Render the h1 block, contained in a frame of size 200x200.
+components.html("""<html>
+                <head>
+                <style> 
+                h1 {text-align: center;}
+                </style>
+                </head>
+                <body text = "black" bgcolor = "white"><h1> Visualization </h1>
+                </body>
+                </html>""", width=1000, height=90)
+
+
+# st.title(":bar_chart: :blue[Visualization]")
+# st.metric("Age", 24)
 uploaded_file = st.file_uploader("Choose a file", type=["csv","xlsx"])
 
 # Create Pandas DataFrame
