@@ -1,4 +1,3 @@
-
 # Import neccessary libraries
 import streamlit as st 
 import pandas as pd 
@@ -6,6 +5,8 @@ import numpy as np
 import plotly.express as px
 from PIL import Image
 from generate_python_code import python_code
+import tensorflow as tf 
+print(tf.__version__)
 # Page setup 
 page_icon = Image.open("Images/page_icon.png")
 st.set_page_config(page_title="Data Explorer", page_icon=page_icon, layout="wide")
