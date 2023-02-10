@@ -2,7 +2,7 @@ import streamlit as st
 import tensorflow as tf 
 import pandas as pd 
 from tensorflow.keras.utils import plot_model
-from generate_python_code import ann_viz
+from generate_python_code import ann_viz, model_architecture_code
 import base64
 
 
@@ -37,6 +37,10 @@ if plot:
     plot_model(model, show_shapes = True,to_file = "Images/model.png")
     dic_col.write(dic)
     plot_col.image("Images/model.png")
+    model_code = model_architecture_code(dic)
+    st.write("#python code")
+    st.write(f"Hello world{'/n'.join(['1','2','3'])}")
+    
         
     
 

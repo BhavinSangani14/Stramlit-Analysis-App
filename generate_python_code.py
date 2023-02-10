@@ -234,3 +234,16 @@ def ann_viz(model, view=True, filename="network.gv", title="My Neural Network"):
         g.edge_attr.update(arrowhead="none", color="#707070");
         if view == True:
             g.view();
+            
+def model_architecture_code(dic):
+    layers_list = []
+    for layer, feat in dic.items():
+        num_neu = feat["Neurons"]
+        acti_fun = feat["Activation"]
+        layer_name = feat["Layer Name"]
+        layers_list.append(f"model.add(tf.keras.layers.Dense(units = {num_neu}, activaion = '{acti_fun}', name = '{layer_name}'))")
+        
+    code = """/n""".join(layers_list)
+    return code
+        
+    
