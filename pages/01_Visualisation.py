@@ -6,10 +6,15 @@ import plotly.express as px
 from PIL import Image
 from generate_python_code import python_code
 import tensorflow as tf 
+import streamlit.components.v1 as components 
 print(tf.__version__)
+
+
 # Page setup 
 page_icon = Image.open("Images/page_icon.png")
 st.set_page_config(page_title="Data Explorer", page_icon=page_icon, layout="wide")
+
+#To hide menu and footer
 hide_menu_style = """
         <style>
         #MainMenu {visibility: hidden; }
@@ -17,9 +22,6 @@ hide_menu_style = """
         </style>
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
-# User input file
-
-import streamlit.components.v1 as components  # Import Streamlit
 
 # Render the h1 block, contained in a frame of size 200x200.
 components.html("""<html>
@@ -33,8 +35,7 @@ components.html("""<html>
                 </html>""", width=1000, height=90)
 
 
-# st.title(":bar_chart: :blue[Visualization]")
-# st.metric("Age", 24)
+# User input file
 uploaded_file = st.file_uploader("Choose a file", type=["csv","xlsx"])
 
 # Create Pandas DataFrame
