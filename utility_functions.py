@@ -73,13 +73,16 @@ def Linear_Regression(df, target_col, feature_columns):
     cols, cat_cols, num_cols = process_columns(X)
     
     encoder = LabelEncoder()
-    X[cat_cols] = encoder.fit_transform(X[cat_cols])
+    # encoder.fit(X[cat_cols])
+    # st.write(encoder.transform(X[cat_cols]).shape)
+    X["Cat_col"] = encoder.fit_transform(X[cat_cols])
+    X.drop(columns = cat_cols, inplace = True)
     
     scaler = StandardScaler()
     scaled_X = scaler.fit_transform(X)
     
     model = LinearRegression()
-    model.fit_transform(X, y)
+    model.fit(X, y)
     
     pred = model.predict(X)
     MSE = mean_squared_error(pred, y)
