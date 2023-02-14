@@ -4,10 +4,10 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 from PIL import Image
-from generate_python_code import python_code
+from utility_functions import python_code
 import tensorflow as tf 
 import streamlit.components.v1 as components 
-from data_processing import process_columns
+from utility_functions import process_columns, Linear_Regression
 print(tf.__version__)
 
 
@@ -63,12 +63,12 @@ else:
 
 #Selection of ML Model type
 if model_type == "Regression":
-    ML_model = st.radio("Choose Model", ["Linear Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Neural Network"], disabled=False)
+    ML_model = st.radio("Choose Model", ["Linear_Regression", "DecisionTree", "RandomForest", "GradientBoosting", "NeuralNetwork"], disabled=False)
 if model_type == "Classification":
-    ML_type = st.radio("Choose Model", ["KNN", "Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Neural Network"], disabled=False)
+    ML_type = st.radio("Choose Model", ["KNN", "LogisticRegression", "DecisionTree", "RandomForest", "GradientBoosting", "NeuralNetwork"], disabled=False)
     
 
-if ML_model == "Linear Regression":
+if ML_model == "Linear_Regression":
     
     target_col = st.selectbox("Select Target Column", num_cols)
     st.write(f"Target Column : {target_col}")
@@ -79,3 +79,5 @@ if ML_model == "Linear Regression":
     st.write(f"Feature_cols    :    {', '.join(feature_cols)}")
     
     #Build Model
+    model, MSE = Linear_Regression(df, target_col, feature_cols)
+    st.write(f"MSE : {MSE}")

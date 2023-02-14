@@ -2,7 +2,7 @@ import streamlit as st
 import tensorflow as tf 
 import pandas as pd 
 from tensorflow.keras.utils import plot_model
-from generate_python_code import ann_viz, model_architecture_code
+from utility_functions import model_architecture_code
 import base64
 
 

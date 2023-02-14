@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 from PIL import Image
-from generate_python_code import python_code
+from utility_functions import python_code
 import tensorflow as tf 
 import streamlit.components.v1 as components 
 print(tf.__version__)
