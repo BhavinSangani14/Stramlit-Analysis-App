@@ -78,6 +78,8 @@ if ML_model == "Linear_Regression":
     feature_cols = st.multiselect("Select Feature Columns", feat_col_options)
     st.write(f"Feature_cols    :    {', '.join(feature_cols)}")
     
+    build = st.button("Build Model")
+    if build:
     #Build Model
-    model, MSE = Linear_Regression(df, target_col, feature_cols)
-    st.write(f"MSE : {MSE}")
+        model, MSE = Linear_Regression(df, target_col, feature_cols)
+        st.write(f"MSE : {MSE}")

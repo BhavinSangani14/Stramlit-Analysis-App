@@ -57,7 +57,7 @@ def process_columns(df):
     cols = list(df.columns)
     
     #Categorical columns
-    cat_cols = list(df.select_dtypes(include = ["object"]).columns)
+    cat_cols = list(df.select_dtypes(include = ["O"]).columns)
     
     #Numerical columns
     num_cols = list(df.drop(columns = cat_cols).columns)
@@ -67,22 +67,22 @@ def process_columns(df):
 
 def Linear_Regression(df, target_col, feature_columns):
     
+    df = df[feature_columns.append(target_col)].dropna(how = "any")
+    
     X = df[feature_columns]
     y = df[target_col]
     
     cols, cat_cols, num_cols = process_columns(X)
     
-    encoder = LabelEncoder()
-    # encoder.fit(X[cat_cols])
-    # st.write(encoder.transform(X[cat_cols]).shape)
-    X["Cat_col"] = encoder.fit_transform(X[cat_cols])
-    X.drop(columns = cat_cols, inplace = True)
+    final_df = pd.get_dummies(X[cat_cols], drop_first=True)
     
     scaler = StandardScaler()
-    scaled_X = scaler.fit_transform(X)
+    scaled_data = scaler.fit_transform(X[num_cols])
+    
+    final_df[num_cols] = scaled_data
     
     model = LinearRegression()
-    model.fit(X, y)
+    model.fit(final_df, y)
     
     pred = model.predict(X)
     MSE = mean_squared_error(pred, y)
