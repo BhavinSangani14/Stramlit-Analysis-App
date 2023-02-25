@@ -57,7 +57,7 @@ def process_columns(df):
     cols = list(df.columns)
     
     #Categorical columns
-    cat_cols = list(df.select_dtypes(include = ["O"]).columns)
+    cat_cols = list(df.select_dtypes(include = ["object"]).columns)
     
     #Numerical columns
     num_cols = list(df.drop(columns = cat_cols).columns)
@@ -67,24 +67,76 @@ def process_columns(df):
 
 def Linear_Regression(df, target_col, feature_columns):
     
-    df = df[feature_columns.append(target_col)].dropna(how = "any")
+    y = df[target_col]
+    df = df[feature_columns]
+    #fill null values
+    df.fillna(df.mean(), inplace = True)
     
+    # creating Feature matrix and target column
+    X = df[feature_columns]
+    
+    
+    #creating categorical and Numerical columns list
+    cols, cat_cols, num_cols = process_columns(X)
+    
+    #Onehot encoding of catgegorical columns
+    if len(cat_cols)!=0:
+        cat_df = pd.get_dummies(X[cat_cols], drop_first=True)
+        X = pd.concat([X, cat_df], axis=1)
+        X.drop(columns = cat_cols, inplace = True)
+    
+    #Scaling numerical columns
+    if len(num_cols)!= 0:
+        scaler = StandardScaler()
+        scaler.fit(X[num_cols].values)
+        X[num_cols] = scaler.transform(X[num_cols].values)
+    
+    # Fit linear regression model
+    model = LinearRegression()
+    model.fit(X, y)
+    
+    #make predction
+    pred = model.predict(X)
+    
+    #calculate MSE
+    MSE = mean_squared_error(pred, y)
+    
+    return model, np.round(MSE, 2)
+
+
+
+def Logistic_Regression(df, target_col, feature_columns):
+    
+    #fill null values
+    df.fillna(method = "ffill", inplace = True)
+    
+    # creating Feature matrix and target column
     X = df[feature_columns]
     y = df[target_col]
     
+    #creating categorical and Numerical columns list
     cols, cat_cols, num_cols = process_columns(X)
     
-    final_df = pd.get_dummies(X[cat_cols], drop_first=True)
+    #Onehot encoding of catgegorical columns
+    if len(cat_cols)!=0:
+        cat_df = pd.get_dummies(X[cat_cols], drop_first=True)
+        X = pd.concat([X, cat_df], axis=1)
+        X.drop(columns = cat_cols, inplace = True)
     
-    scaler = StandardScaler()
-    scaled_data = scaler.fit_transform(X[num_cols])
+    #Scaling numerical columns
+    if len(num_cols)!= 0:
+        scaler = StandardScaler()
+        scaler.fit(X[num_cols].values)
+        X[num_cols] = scaler.transform(X[num_cols].values)
     
-    final_df[num_cols] = scaled_data
-    
+    # Fit linear regression model
     model = LinearRegression()
-    model.fit(final_df, y)
+    model.fit(X, y)
     
+    #make predction
     pred = model.predict(X)
+    
+    #calculate MSE
     MSE = mean_squared_error(pred, y)
     
     return model, np.round(MSE, 2)

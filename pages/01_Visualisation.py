@@ -12,7 +12,8 @@ print(tf.__version__)
 
 # Page setup 
 page_icon = Image.open("Images/page_icon.png")
-st.set_page_config(page_title="Data Explorer", page_icon=page_icon, layout="wide")
+st.set_page_config(page_title="Visualization", page_icon=page_icon, layout="wide")
+
 
 #To hide menu and footer
 hide_menu_style = """
@@ -34,6 +35,34 @@ components.html("""<html>
                 </body>
                 </html>""", width=1000, height=90)
 
+
+# Utility Function
+def python_code(file_type, uploaded_file, column_1, column_2, plot_type, color_col=None):
+    
+    if color_col != None:   
+        code = f"""#Python Code
+import pandas as pd
+import plotly.express as px
+data = pd.read_{file_type}("{uploaded_file.name}") 
+first_column = "{column_1}"
+second_column = "{column_2}"
+color_column = "{color_col}"
+fig = px.{plot_type}(data, x = "{column_1}", y = "{column_2}", color = "{color_col}", template="simple_white")
+fig.show()
+"""
+
+    if color_col == None:   
+        code = f"""#Python Code
+import pandas as pd
+import plotly.express as px
+data = pd.read_{file_type}("{uploaded_file.name}") 
+first_column = "{column_1}"
+second_column = "{column_2}"
+fig = px.{plot_type}(data, x = "{column_1}", y = "{column_2}", template="simple_white")
+fig.show()
+"""
+
+    return code
 
 # User input file
 uploaded_file = st.file_uploader("Choose a file", type=["csv","xlsx"])

@@ -63,12 +63,11 @@ else:
 
 #Selection of ML Model type
 if model_type == "Regression":
-    ML_model = st.radio("Choose Model", ["Linear_Regression", "DecisionTree", "RandomForest", "GradientBoosting", "NeuralNetwork"], disabled=False)
+    ML_model = st.radio("Choose Model", ["Linear Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Neural Network"], disabled=False)
 if model_type == "Classification":
-    ML_type = st.radio("Choose Model", ["KNN", "LogisticRegression", "DecisionTree", "RandomForest", "GradientBoosting", "NeuralNetwork"], disabled=False)
+    ML_model = st.radio("Choose Model", ["KNN", "Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Neural Network"], disabled=False)
     
-
-if ML_model == "Linear_Regression":
+if ML_model == "Linear Regression" and model_type == "Regression" and uploaded_file:
     
     target_col = st.selectbox("Select Target Column", num_cols)
     st.write(f"Target Column : {target_col}")
@@ -82,4 +81,24 @@ if ML_model == "Linear_Regression":
     if build:
     #Build Model
         model, MSE = Linear_Regression(df, target_col, feature_cols)
-        st.write(f"MSE : {MSE}")
+        st.write(f"Model : Linear Regression")
+        st.write(f"MSE of Linear Regression Model : {MSE}")
+        
+
+if ML_model == "Logistic Regression" and model_type == "Classification":
+    
+    target_col = st.selectbox("Select Target Column", cat_cols)
+    st.write(f"Target Column : {target_col}")
+    
+    feat_col_options = cols.copy()
+    feat_col_options.remove(target_col)
+    feature_cols = st.multiselect("Select Feature Columns", feat_col_options)
+    st.write(f"Feature_cols    :    {', '.join(feature_cols)}")
+    
+    build = st.button("Build Model")
+    if build:
+    #Build Model
+        model, MSE = Logistic_Regression(df, target_col, feature_cols)
+        st.write(f"Model : Logistic Regression")
+        st.write(f"MSE of Linear Regression Model : {MSE}")
+    
